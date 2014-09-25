@@ -11,7 +11,7 @@ typedef int bool;
 
 
 /*Variables */
-int Width;
+int width;
 char character;
 bool useCharacter = false;
 bool useLetterChar = false;
@@ -57,6 +57,7 @@ void show(char *s) {
 
 int scanForVar(char *s){
     if (s[0] == '-'){
+        /* -C -c Character printing section*/ 
         if (s[1] == 'C' || s[1] == 'c'){
             if (s[2] != '\0') {
                 if (useCharacter == true ){
@@ -67,9 +68,15 @@ int scanForVar(char *s){
                 }else{
                     useCharacter = true;
                     character = s[2];
+                    return 1; 
                 }
             }
-            return 1;
+            else {
+                fprintf(stderr,"bad syntax: there is no character ex. usage -Ca or -cR\n");
+                fflush(stderr);
+                exit ( -1 );
+            }
+            /* -s -S same as letter Character printing section */
         }else if (s[1] == 'S' || s[1]=='s'){
             if (useLetterChar == true ){
                 fprintf(stderr,"bad syntax double -S or -s initializing \n");
@@ -80,10 +87,16 @@ int scanForVar(char *s){
                 useLetterChar = true;
             }
             return 1;
+            /* -n -N RAW input selecting section */ 
         }else if (s[1] == 'N' || s[1]=='n'){
             rawInput = true;     
 
             return 2;
+        }
+        else if (s[1] == 'w' || s[1] == 'W'){
+            fprintf (stderr, "setting width not suported yet\n");
+            fflush(stderr); 
+            return 1;
         }
 
     } 
@@ -116,7 +129,7 @@ int main(int argc,char **argv) {
     v = argv+howManyVarArgs;
     c = argc -howManyVarArgs;
 
-    /* smart for ittakes line */
+    /* smart for it takes line */
     for (v++,c--;*v;v++,c--){
         show(*v);
     }

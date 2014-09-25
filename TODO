@@ -1,0 +1,5 @@
+TODO list:
+
+1) Add (-w -W) switch
+    problems : part of the string must be converted to int.
+2) Make addnotation about license .
