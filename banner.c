@@ -17,7 +17,7 @@ bool useCharacter = false;
 bool useLetterChar = false;
 bool rawInput = false;
 int enc(int c) { return strchr(vec,c)-vec; }
-
+bool stdinEnable;
 /* this function is responsible for printing*/
 void show(char *s) {
     int row,col;
@@ -92,10 +92,18 @@ int scanForVar(char *s){
             rawInput = true;     
 
             return 2;
+        }if (s[1] == 'I' || s[1]=='i'){
+            stdinEnable = true;     
+
+            return 2;
         }
+
         else if (s[1] == 'w' || s[1] == 'W'){
+
             fprintf (stderr, "setting width not suported yet\n");
             fflush(stderr); 
+
+
             return 1;
         }
 
@@ -106,10 +114,18 @@ int scanForVar(char *s){
 
 /*main takes args from command line*/
 
-int main(int argc,char **argv) {
+int main(int argc,char **argv){
+    char line [300];
+    /*info about stdin*/ 
+    if (argc == 1 && scanf ("%s",line)){
+        fprintf(stdout,"Stdin enabled\n");
+        fflush(stdout);
+        stdinEnable = true;
+    }
     /*no args prints helpString*/ 
-    if (argc == 1)
+    else if (argc == 1){
         printf ("%s",bannerHelpString);
+    }
     int howManyVarArgs=0;
     char **v = argv;
     int c = argc;
@@ -119,6 +135,11 @@ int main(int argc,char **argv) {
             howManyVarArgs++;
         } else  if ( tmp == 2) {
             howManyVarArgs++;
+            if (howManyVarArgs !=1){
+                fprintf(stderr, "You can't use -n or -N with other switches\n");
+                fflush (stderr);
+                exit (-1);
+            } 
             break;
         }
         else {
@@ -130,8 +151,17 @@ int main(int argc,char **argv) {
     c = argc -howManyVarArgs;
 
     /* smart for it takes line */
-    for (v++,c--;*v;v++,c--){
-        show(*v);
+    if (stdinEnable == false){
+        for (v++,c--;*v;v++,c--){
+            show(*v);
+        }
     }
+    else {
+        do{
+             show (line); 
+        }while(scanf("%s",line) && line != NULL);    
+
+    }
+
     return 0;
 }
