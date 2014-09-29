@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 /*banner map contains the "font", banner help contains help string*/
 #include "bannerMap.h"
 #include "bannerHelp.h"
@@ -17,7 +19,7 @@ bool useCharacter = false;
 bool useLetterChar = false;
 bool rawInput = false;
 int enc(int c) { return strchr(vec,c)-vec; }
-bool stdinEnable;
+bool stdinEnable = false;
 /* this function is responsible for printing*/
 void show(char *s) {
     int row,col;
@@ -102,8 +104,6 @@ int scanForVar(char *s){
 
             fprintf (stderr, "setting width not suported yet\n");
             fflush(stderr); 
-
-
             return 1;
         }
 
@@ -115,17 +115,7 @@ int scanForVar(char *s){
 /*main takes args from command line*/
 
 int main(int argc,char **argv){
-    char line [300];
-    /*info about stdin*/ 
-    if (argc == 1 && scanf ("%s",line)){
-        fprintf(stdout,"Stdin enabled\n");
-        fflush(stdout);
-        stdinEnable = true;
-    }
-    /*no args prints helpString*/ 
-    else if (argc == 1){
-        printf ("%s",bannerHelpString);
-    }
+   
     int howManyVarArgs=0;
     char **v = argv;
     int c = argc;
@@ -150,6 +140,11 @@ int main(int argc,char **argv){
     v = argv+howManyVarArgs;
     c = argc -howManyVarArgs;
 
+    char line [300];
+    /*info about stdin*/ 
+    if (argc == 1 && stdinEnable == true){
+        printf ("%s",bannerHelpString);
+    }
     /* smart for it takes line */
     if (stdinEnable == false){
         for (v++,c--;*v;v++,c--){
@@ -157,11 +152,12 @@ int main(int argc,char **argv){
         }
     }
     else {
-        do{
-             show (line); 
-        }while(scanf("%s",line) && line != NULL);    
-
+        while( scanf("%s",line) != EOF ){
+            show (line); 
+        }
     }
 
     return 0;
 }
+
+

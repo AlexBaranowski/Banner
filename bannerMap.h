@@ -10,9 +10,9 @@ enum {
 };
 
 char vec[] = " 0123456789"
-    "abcdefghijklmnopqrstuvwxyz"
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    ".,:!/\\|+-*=";
+"abcdefghijklmnopqrstuvwxyz"
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+".,:!/\\|+-*=";
 
 unsigned char map[sizeof(vec)][8] = {
     /* */ {0, 0, 0, 0, 0, 0, 0, 0}, /* it wasn't funny! */
@@ -36,7 +36,7 @@ unsigned char map[sizeof(vec)][8] = {
     /*h*/ {B, B, B, B|C|D|E, B|F, B|F, A|B|F, 0},
     /*i*/ {0, C, 0, B|C, C, C, A|B|C|D|E, 0},
     /*j*/ {0, D, 0, D, D, D, A|D, B|C},
-    /*k*/ {B|F, B|E, B|D, B|C, B|D, B|E, B|F, 0},
+    /*k*/ {0, B|E, B|D, B|C, B|D, B|E,B|F, 0},
     /*l*/ {B|C, C, C, C, C, C, A|B|C|D, 0},
     /*m*/ {0, 0, A|C|E|F, A|B|D|G, A|D|G, A|D|G, A|D|G, 0},
     /*n*/ {0, 0, B|D|E, B|C|F, B|F, B|F, B|F},

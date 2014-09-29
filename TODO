@@ -3,6 +3,4 @@ TODO list:
 1) Add (-w -W) switch
     problems : part of the string must be converted to int.
 2) Make addnotation about license.
-3) STDIN without Ending bug should be repaired.
 4) Help string should be updated
-5) -s switch should be deleted.
