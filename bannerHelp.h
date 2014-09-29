@@ -7,5 +7,6 @@ You can use this program in 2 ways\n\
 \tbanner [options] words  \n\
 \t-c [CHAR] change output character\n\
 \t-s printing character is the same as letter\n\
-\t-w [number] widht of terminal when it should be printed\n\
-\t-n no options print every line as it is\n"};
+\t-i reads from stdin\n\
+\t-n no options print every line as it is try \"banner -s -n\" \"banner -n -s -n\"\n\
+This program is distributed "};
