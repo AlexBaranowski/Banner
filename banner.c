@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 /*banner map contains the "font", banner help contains help string*/
 #include "bannerMap.h"
 #include "bannerHelp.h"
@@ -123,7 +124,11 @@ int scanForVar(char *s){
 
     return 0;
 }
-
+void findTerminalWidth(void){
+    struct winsize w;
+    ioctl(0, TIOCGWINSZ, &w);
+    width = w.ws_col;
+}
 /*main takes args from command line*/
 
 int main(int argc,char **argv){
@@ -149,9 +154,14 @@ int main(int argc,char **argv){
         }
 
     }
+    
+    findTerminalWidth(); 
+    int maxCharsToPrint = (width/8);
+    char* maxStringToPrint=(char*)malloc(maxCharsToPrint+1);
+
     v = argv+howManyVarArgs;
     c = argc -howManyVarArgs;
-
+    
     char line [300];
     /*info about stdin*/ 
     if (argc == 1 && stdinEnable == false){
@@ -160,11 +170,15 @@ int main(int argc,char **argv){
     /* smart for it takes line */
     if (stdinEnable == false){
         for (v++,c--;*v;v++,c--){
-            show(*v);
+            strncpy(maxStringToPrint, *v, maxCharsToPrint);
+            /* Just in case */
+            maxStringToPrint[maxCharsToPrint]=0;
+            show(maxStringToPrint);
         }
     }
     else {
         while( scanf("%s",line) != EOF ){
+             
             show (line); 
         }
     }
