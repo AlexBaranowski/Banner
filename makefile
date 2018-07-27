@@ -9,3 +9,5 @@ banner:	banner.c
 	$(CC) $(CFlags) -o banner banner.c
 clean:
 	rm -f banner
+install:
+	install banner /usr/bin/
